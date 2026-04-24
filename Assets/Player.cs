@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     PlayerInput playerInput;
     Rigidbody2D rb;
 
+    int jumpCount = 2;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,9 +25,18 @@ public class Player : MonoBehaviour
 
         rb.linearVelocityX = move.x * speed;
 
-        if (playerInput.actions["Jump"].WasPressedThisFrame())
+        if (playerInput.actions["Jump"].WasPressedThisFrame()&&jumpCount>0)
         {
             rb.linearVelocityY = jumpSpeed;
+            jumpCount--;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.tag == "Ground")
+        {
+            jumpCount = 2;
         }
     }
 }
